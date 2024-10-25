@@ -1,0 +1,61 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "detail": "编译ts为js",
+      "label": "build",
+      "type": "shell",
+      "command": "npm",
+      "dependsOn": ["removeDist"],
+      "args": ["run", "build"]
+    }, {
+      "detail": "删除dist目录",
+      "label": "removeDist",
+      "type": "shell",
+      "command": "rm -rf dist"
+    }, {
+      "detail": "执行create命令前执行的任务",
+      "label": "preCreateTask",
+      "type": "shell",
+      "dependsOn": ["build"],
+      "command": "rm -rf examples/my-app"
+    },
+    {
+      "detail": "执行san create命令",
+      "label": "create",
+      "type": "shell",
+      "dependsOn": ["preCreateTask"],
+      "options": {
+        "cwd": "${workspaceFolder}/examples"
+      },
+      "command": "node",
+      "args": ["${workspaceFolder}/dist/bin/index.js", "create"]
+    }, {
+      "detail": "将san包link到全局",
+      "label": "linkSanGlobal",
+      "type": "shell",
+      "dependsOn": ["create"],
+      "command": "npm link"
+    },
+    {
+      "detail": "link san包到my-app目录",
+      "label": "linkSan",
+      "type": "shell",
+      "dependsOn": ["linkSanGlobal"],
+      "options": {
+        "cwd": "${workspaceFolder}/examples/my-app"
+      },
+      "command": "npm link @san/app"
+    },
+    {
+      "detail": "启动dev命令调试前执行的任务",
+      "label": "preDevTask",
+      "type": "shell",
+      "options": {
+        "cwd": "${workspaceFolder}/examples/my-app"
+      },
+      "dependsOn": ["linkSan"],
+      "command": "npm install"
+    }
+  ]
+}

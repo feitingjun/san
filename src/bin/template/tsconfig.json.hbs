@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "baseUrl": "../",
+    "strict": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "san": [
+        ".san"
+      ]
+    }
+  },
+  "include": [
+    "../.sanrc.ts",
+    "../src/**/*",
+    "../.san/**/*",
+    "**/*.tsx",
+    "**/*.ts"
+  ],
+  "exclude": ["**/node_modules/**"]
+}

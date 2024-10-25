@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "target": "ES2020", 
+    "module": "ES2020",
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "sourceMap": true
+  },
+  "include": ["src/**/*", "examples/my-app/src/document.tsx"],
+  "exclude": ["**/node_modules/**"]
+}

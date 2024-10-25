@@ -1,0 +1,16 @@
+import { usePageConfig as useRouteConfig, useAppContext } from '@san/app'
+import { PageConfig, AppConfig, DataLoader } from './types'
+import app from '@/app'
+
+export const definePageConfig = <D={}>(pageConfig: PageConfig<D>) => pageConfig
+
+export const defineApp = <T>(config: AppConfig<T>) => config
+
+export const defineDataLoader = <T>(dataLoader: DataLoader<T>) => dataLoader
+
+export const usePageConfig = <T>() => useRouteConfig<T & PageConfig>()
+
+export const useAppData = <T>() => {
+  const ctx = useAppContext<T & (typeof app extends { appData: infer T } ? T : unknown)>()
+  return ctx.appData
+}

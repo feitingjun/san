@@ -1,0 +1,29 @@
+import { useAppContext, useLoaderData } from '@san/app'
+export * from './types'
+export * from './define'
+{{#each exports}}
+import {{#isArray this.specifier~}}
+    { {{#each this.specifier}}{{this}}{{#unless @last}}, {{/unless}}{{/each}} }
+  {{~/isArray~}}
+  {{#isString this.specifier}}{{this.specifier}}{{/isString}} from '{{this.source}}'
+{{/each}}
+
+export {
+  useAppContext,
+  useLoaderData
+  {{~#each exports}}
+    {{~#if @first}},
+    {{/if}}
+    {{#isArray this.specifier}}
+      {{~#each this.specifier}}  {{this}}
+        {{~#unless (and @last @../last)}},
+        {{/unless~}}
+      {{/each}}
+    {{/isArray}}
+    {{~#isString this.specifier}}  {{this.specifier}}
+      {{~#unless @last}},
+      {{/unless}}
+    {{/isString}}
+  {{/each}}
+  
+}

@@ -1,0 +1,49 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "构建ts",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "build"]
+    },
+    {
+      "name": "仅启动sanjs项目",
+      "type": "node",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/examples/my-app",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "start"]
+    },
+    {
+      "name": "创建并启动sanjs项目",
+      "type": "node",
+      "request": "launch",
+      "preLaunchTask": "preDevTask",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/examples/my-app",
+      "program": "${workspaceFolder}/dist/bin/index.js",
+      "args": ["dev"]
+    }, {
+      "name": "仅创建sanjs项目",
+      "type": "node",
+      "request": "launch",
+      "preLaunchTask": "preCreateTask",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/examples",
+      "program": "${workspaceFolder}/dist/bin/index.js",
+      "args": ["create"]
+    },{
+      "name": "创建sanjs项目并安装依赖",
+      "type": "node",
+      "request": "launch",
+      "preLaunchTask": "preDevTask",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/examples",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["install"]
+    }
+  ]
+}
