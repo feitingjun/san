@@ -48,16 +48,23 @@ export interface UserConfig {
   chunkSizeWarningLimit?: number
   /**修改vite配置 */
   vite?: (config: InlineConfig) => InlineConfig
+  /**插件 */
   plugins?: Plugin[]
 }
 
 export type AppConfig<T={}> = {
+  // 根节点，默认app
   root?: string
+  // 是否启用react的严格模式
   strict?: boolean
+  // router类型
   router?: 'hash' | 'browser' | 'memory'
   appData?: any
+  // 插入根节点前修改根组件
   rootContainer?: (container: React.ReactNode) => React.ReactNode
+  // 运行时修改路由清单
   patchManifest?: (manifest:ManifestClient) => ManifestClient
+  // 运行时修改路由
   patchRoutes?: (routes:RouteObject[]) => RouteObject[]
 } & T
 
