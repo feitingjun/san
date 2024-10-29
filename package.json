@@ -31,7 +31,6 @@
     "vite": "^5.4.8"
   },
   "devDependencies": {
-    "@types/lodash-es": "^4.17.12",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1"
   }
