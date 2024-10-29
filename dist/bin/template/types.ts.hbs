@@ -1,0 +1,49 @@
+import type {
+  AppConfig as AppConfigType,
+  PageConfig as PageRouteConfig,
+  DataLoader,
+  DataLoadeContext
+} from '@san/app'
+{{#each all~}}
+import {{#isArray this.specifier~}}
+    { {{#each this.specifier}}{{this}}{{#unless @last}}, {{/unless}}{{/each}} }
+  {{~/isArray~}}
+  {{#isString this.specifier}}{{this.specifier}}{{/isString}} from '{{this.source}}'
+{{/each}}
+
+export type ExtendPageConfig = {{#unless pageConfig.length}}{}{{/unless}}
+{{~#if pageConfig.length}}
+  {{#each pageConfig}}
+    {{~#isArray this.specifier}}
+      {{~#each this.specifier}}
+        {{~#unless (and @first @../first)}} & {{/unless}}
+        {{~this~}}
+      {{/each}}
+    {{~/isArray}}
+    {{~#isString this.specifier}}{{#unless @first}} & {{/unless}}{{this.specifier}}{{/isString}}
+  {{~/each}}
+{{/if}}
+
+
+export type ExtendAppConfig = {{#unless appTypes.length}}{}{{/unless}}
+{{~#if appTypes.length}}
+  {{#each appTypes}}
+    {{~#isArray this.specifier}}
+      {{~#each this.specifier}}
+        {{~#unless (and @first @../first)}} & {{/unless}}
+        {{~this~}}
+      {{/each}}
+    {{~/isArray}}
+    {{~#isString this.specifier}}{{#unless @first}} & {{/unless}}{{this.specifier}}{{/isString}}
+  {{~/each}}
+{{/if}}
+
+
+export type PageConfig<D=any> = PageRouteConfig<ExtendPageConfig, D>
+
+export type AppConfig<T={}> = AppConfigType<T & ExtendAppConfig>
+
+export {
+  DataLoader,
+  DataLoadeContext
+}

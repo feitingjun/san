@@ -1,0 +1,3 @@
+import { loader } from '@san/app'
+
+export default {{ include './single-route.ts.art', {routes: routes, indent: 0} }}

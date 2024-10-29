@@ -1,0 +1,15 @@
+{{set indent = '  '.repeat($data.indent)}}[{{each $data.routes}}{
+{{indent}}  id: '{{$value.id}}',
+{{indent}}  path: '{{$value.path}}',
+{{indent}}  async lazy() {
+{{indent}}    const componentModule = await import('{{$value.file}}')
+{{indent}}    return {
+{{indent}}      layout: {{$value.layout ? true : false}},{{if $value.parentId}}
+{{indent}}      parentId: '{{$value.parentId}}',{{/if}}
+{{indent}}      Component: componentModule.default,
+{{indent}}      loader: loader(componentModule),
+{{indent}}      ErrorBoundary: () => null
+{{indent}}    }
+{{indent}}  }{{if $value.children && $value.children.length > 0}},
+{{indent}}  children: {{ include './single-route.ts.art', { routes: $value.children, indent: $data.indent + 1 } }}{{/if}}
+{{indent}}}{{if $index < $data.routes.length - 1}},{{/if}}{{/each}}]
