@@ -1,6 +1,7 @@
 import { useAppContext, useLoaderData } from '@san/app'
 export * from './types'
 export * from './define'
+import { Link, Outlet, useLocation, useMatch, useMatches, useNavigate, useNavigation, useOutlet, useOutletContext, useResolvedPath, useSearchParams, useSubmit, useParams, useRoutes, useNavigationType } from 'react-router-dom'
 {{#each exports}}
 import {{#isArray this.specifier~}}
     { {{#each this.specifier}}{{this}}{{#unless @last}}, {{/unless}}{{/each}} }
@@ -10,7 +11,22 @@ import {{#isArray this.specifier~}}
 
 export {
   useAppContext,
-  useLoaderData
+  useLoaderData,
+  Link,
+  Outlet,
+  useLocation,
+  useMatch,
+  useMatches,
+  useNavigate,
+  useNavigation,
+  useOutlet,
+  useOutletContext,
+  useResolvedPath,
+  useSearchParams,
+  useSubmit,
+  useParams,
+  useRoutes,
+  useNavigationType
   {{~#each exports}}
     {{~#if @first}},
     {{/if}}
