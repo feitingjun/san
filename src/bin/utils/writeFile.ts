@@ -105,10 +105,11 @@ export const writeTsConfig = (projectName:string) => {
     sourcePath: TMP_DIR + '/tsconfig.json.hbs',
     outPath: `${projectName}/.san/tsconfig.json`,
   })
-  writeFileSync(`${projectName}/tsconfig.json`, `{
+  if(!existsSync(`${projectName}/tsconfig.json`)) {
+    writeFileSync(`${projectName}/tsconfig.json`, `{
   "extends": "./.san/tsconfig.json"
-}`
-)
+}`)
+  }
 }
 
 /**写入.san/index.ts */
