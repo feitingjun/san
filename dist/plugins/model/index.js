@@ -27,10 +27,10 @@ export default definePlugin(() => ({
             }
         });
         addWatch((event, path) => {
-            const regex = new RegExp(`^${resolve(process.cwd(), 'src')}/models/.*(ts|js)$`);
+            const regex = new RegExp(`^${resolve(process.cwd(), 'src')}/models/.*\.(ts|js)$`);
             if (['add', 'unlink'].includes(event) && regex.test(path)) {
                 addFileTemplate({
-                    sourcePath: resolve(import.meta.dirname, 'model.ts'),
+                    sourcePath: resolve(import.meta.dirname, 'model.ts.hbs'),
                     outPath: resolve(import.meta.dirname, 'model.ts'),
                     data: {
                         models: getModels()
