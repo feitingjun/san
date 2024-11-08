@@ -23,7 +23,7 @@ export default async (mode: 'development' | 'production') => {
       modules: {
         scopeBehaviour: 'local',
         globalModulePaths: [/\.global\.(css|less|sass|scss)$/],
-        generateScopedName: '[name]___[hash:base64:5]',
+        generateScopedName: '[local]__[hash:base64:5]',
         localsConvention: 'camelCaseOnly'
       },
       postcss: 'postcss.config.ts'
