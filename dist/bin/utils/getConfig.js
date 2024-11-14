@@ -32,7 +32,7 @@ export default async (mode) => {
             ...vitePlugins
         ],
         server: {
-            host: '0.0.0.0',
+            host: true,
             port: userConfig.port || 8000,
             strictPort: false,
             open: userConfig.open ?? true,
