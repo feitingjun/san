@@ -20,7 +20,7 @@ export default async (mode) => {
             modules: {
                 scopeBehaviour: 'local',
                 globalModulePaths: [/\.global\.(css|less|sass|scss)$/],
-                generateScopedName: '[name]___[hash:base64:5]',
+                generateScopedName: '[local]__[hash:base64:5]',
                 localsConvention: 'camelCaseOnly'
             },
             postcss: 'postcss.config.ts'
@@ -32,6 +32,7 @@ export default async (mode) => {
             ...vitePlugins
         ],
         server: {
+            host: '0.0.0.0',
             port: userConfig.port || 8000,
             strictPort: false,
             open: userConfig.open ?? true,
