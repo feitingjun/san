@@ -12,6 +12,9 @@ hbs.registerHelper('isArray', function(this:any, value, options){
 hbs.registerHelper('isString', function(this:any, value, options){
   return typeof value === 'string' ? options.fn(this) : options.inverse(this)
 })
+hbs.registerHelper('isEqual', function(value1, value2){
+  return value1 === value2
+})
 hbs.registerHelper('and', function(value1, value2){
   return value1 && value2
 })
@@ -149,8 +152,8 @@ export const renderHbsTpl = ({
 // }
 
 /**生成路由清单 */
-export const generateRouteManifest = () => {
-  const srcDir = resolve(process.cwd(), 'src')
+export const generateRouteManifest = (srcDir = 'src') => {
+  srcDir = resolve(process.cwd(), srcDir)
   // 获取页面根目录
   const pageDir = existsSync(srcDir + '/pages') ? 'pages' : ''
   // 获取全局layout

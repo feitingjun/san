@@ -16,17 +16,17 @@
     "allowSyntheticDefaultImports": true,
     "paths": {
       "@/*": [
-        "src/*"
+        "{{srcDir}}/*"
       ],
       "san": [
-        ".san"
+        "{{srcDir}}/.san"
       ]
     }
   },
   "include": [
     "../.sanrc.ts",
-    "../src/**/*",
-    "../.san/**/*",
+    "../{{srcDir}}/**/*",
+    "../{{srcDir}}/.san/**/*",
     "**/*.tsx",
     "**/*.ts"
   ],

@@ -1,7 +1,4 @@
 import {
-  PageConfig,
-  DataLoader,
-  AppConfig,
   UserConfig,
   ConfigEnv,
   Plugin,

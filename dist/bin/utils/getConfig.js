@@ -4,15 +4,17 @@ import prestart from "./prestart.js";
 export default async (mode) => {
     // 用户插件
     const { vitePlugins, userConfig, watchs } = await prestart(mode);
+    const srcDir = userConfig.srcDir || 'src';
     let config = {
         configFile: false,
         mode,
+        root: resolve(process.cwd(), srcDir),
         base: userConfig.basePath || '/',
         publicDir: userConfig.publicDir || 'public',
         resolve: {
             alias: {
-                '@': resolve(process.cwd(), 'src'),
-                san: resolve(process.cwd(), '.san'),
+                '@': resolve(process.cwd(), srcDir),
+                san: resolve(process.cwd(), srcDir, '.san'),
                 ...userConfig.alias
             }
         },
@@ -46,6 +48,6 @@ export default async (mode) => {
     if (userConfig.vite && typeof userConfig.vite === 'function') {
         config = userConfig.vite(config);
     }
-    return { config, watchs };
+    return { config, srcDir, watchs };
 };
 //# sourceMappingURL=getConfig.js.map

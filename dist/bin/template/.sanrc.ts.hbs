@@ -1,5 +1,5 @@
 import { defineConfig } from '@san/app'
 
 export default defineConfig({
-  
+  {{#unless (isEqual srcDir "src")}}'srcDir': '{{srcDir}}'{{/unless}}
 })

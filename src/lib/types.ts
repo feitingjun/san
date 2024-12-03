@@ -32,6 +32,7 @@ export interface UserConfig {
   port?: number
   /**基础路径 */
   basePath?: string
+  srcDir?: string
   /**输出路径 */
   outDir?: string
   /**静态资源存放路径(相对于outDir) */
@@ -109,6 +110,8 @@ export interface PluginOptions {
     mode: 'development' | 'production'
     /**项目根目录 */
     root: string
+    /**src目录 */
+    srcDir: string
     /**用户配置 */
     userConfig: UserConfig
     /**项目package.json内容 */

@@ -21,6 +21,7 @@ export default async (mode: 'development' | 'production'):Promise<{
 }> => {
   const env: ConfigEnv = { mode }
   let userConfig = await getUserConfig(env)
+  const srcDir = userConfig.srcDir || 'src'
   const plugins = [
     ...defaultPlugins,
     ...userConfig.plugins??[]
@@ -34,6 +35,7 @@ export default async (mode: 'development' | 'production'):Promise<{
   const context = {
     mode,
     root: process.cwd(),
+    srcDir,
     userConfig,
     pkg
   }
@@ -104,8 +106,8 @@ export default async (mode: 'development' | 'production'):Promise<{
     return args
   })
   // 创建.san文件夹
-  createSanDir(process.cwd(), {
-    manifest: generateRouteManifest(),
+  createSanDir(process.cwd(), srcDir, {
+    manifest: generateRouteManifest(srcDir),
     pageConfig,
     appTypes,
     exports,

@@ -13,6 +13,7 @@ const defaultPlugins = [
 export default async (mode) => {
     const env = { mode };
     let userConfig = await getUserConfig(env);
+    const srcDir = userConfig.srcDir || 'src';
     const plugins = [
         ...defaultPlugins,
         ...userConfig.plugins ?? []
@@ -26,6 +27,7 @@ export default async (mode) => {
     const context = {
         mode,
         root: process.cwd(),
+        srcDir,
         userConfig,
         pkg
     };
@@ -97,8 +99,8 @@ export default async (mode) => {
         return args;
     });
     // 创建.san文件夹
-    createSanDir(process.cwd(), {
-        manifest: generateRouteManifest(),
+    createSanDir(process.cwd(), srcDir, {
+        manifest: generateRouteManifest(srcDir),
         pageConfig,
         appTypes,
         exports,

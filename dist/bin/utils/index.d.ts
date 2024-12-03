@@ -15,6 +15,6 @@ export declare const renderHbsTpl: ({ sourcePath, outPath, data }: {
     data?: object;
 }) => void;
 /**生成路由清单 */
-export declare const generateRouteManifest: () => Manifest;
+export declare const generateRouteManifest: (srcDir?: string) => Manifest;
 /**防抖函数 */
 export declare const debounce: (fn: Function, delay: number) => (...args: any) => void;

@@ -15,7 +15,7 @@ const needGenerateRoutes = (path) => {
     return (isRootLayout || (isPageOrLayout && inPagesDir) || path === 'src' || path === 'src/pages');
 };
 /**监听路由文件变化 */
-const watchRoutes = async (server, event, path) => {
+const watchRoutes = async (server, event, path, srcDir = 'src') => {
     // 获取项目根目录的的路径
     path = relative(process.cwd(), path);
     // 用户配置变更后重启服务器
@@ -25,7 +25,7 @@ const watchRoutes = async (server, event, path) => {
     }
     // 重新生成路由
     if (event !== 'change' && needGenerateRoutes(path)) {
-        writeSanRoutesTs(process.cwd(), generateRouteManifest());
+        writeSanRoutesTs(process.cwd(), generateRouteManifest(srcDir));
     }
 };
 /**重启开发服务器 */
@@ -36,12 +36,12 @@ const restartServer = async (server) => {
 /**启动开发服务器 */
 const startServer = async (restart) => {
     // vite配置
-    const { config, watchs } = await getConfig('development');
+    const { config, srcDir, watchs } = await getConfig('development');
     // 创建开发服务器
     const server = await createServer(config);
     // 监听路由文件
     server.watcher.on('all', (event, path) => {
-        debounce(() => watchRoutes(server, event, path), 150)();
+        debounce(() => watchRoutes(server, event, path, srcDir), 150)();
     });
     server.watcher.on('all', (...args) => {
         watchs.forEach(watch => watch(...args));

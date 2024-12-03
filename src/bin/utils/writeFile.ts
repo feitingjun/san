@@ -22,35 +22,40 @@ export interface WriteSanOptions {
 }
 
 /**创建.san文件夹 */
-export const createSanDir = (projectName:string, options?: {
-  manifest?: Manifest
-  pageConfig: AddFileOptions[]
-  appTypes: AddFileOptions[]
-  exports: AddFileOptions[]
-  imports: (Omit<AddFileOptions, 'specifier'> & { specifier?: string|string[] })[]
-  aheadCodes: string[]
-  tailCodes: string[]
-  runtimes: string[]
-}) => {
+export const createSanDir = (
+  projectName:string,
+  srcDir='src',
+  options?: {
+    manifest?: Manifest
+    pageConfig: AddFileOptions[]
+    appTypes: AddFileOptions[]
+    exports: AddFileOptions[]
+    imports: (Omit<AddFileOptions, 'specifier'> & { specifier?: string|string[] })[]
+    aheadCodes: string[]
+    tailCodes: string[]
+    runtimes: string[]
+  }
+) => {
   const { manifest, pageConfig, appTypes, exports, imports, aheadCodes, tailCodes, runtimes } = options||{}
-  if(!existsSync(`${projectName}/.san`)) {
-    mkdirSync(`${projectName}/.san`)
+  const sanDir = resolve(projectName, srcDir, '.san')
+  if(!existsSync(sanDir)) {
+    mkdirSync(sanDir, { recursive: true })
   }
   // 创建.san/tsconfig.json
-  writeTsConfig(projectName)
+  writeTsConfig(projectName, srcDir)
   // 创建.san/index.ts
-  writeSanIndexTs(projectName, exports)
+  writeSanIndexTs(sanDir, exports)
   // 创建.san/entry.tsx
-  writeEntryTsx(projectName, {
+  writeEntryTsx(sanDir, {
     imports, aheadCodes, tailCodes
   })
   // 创建.san/types.ts
-  writeSanTypesTs(projectName, pageConfig, appTypes)
+  writeSanTypesTs(sanDir, pageConfig, appTypes)
   // 创建.san/define.ts
-  writeSanDefineTs(projectName)
+  writeSanDefineTs(sanDir)
   // 创建.san/routes.ts
-  writeSanRoutesTs(projectName, manifest)
-  wirteRuntime(projectName, runtimes)
+  writeSanRoutesTs(sanDir, manifest)
+  wirteRuntime(sanDir, runtimes)
 }
 
 /**写入package.json */
@@ -75,73 +80,75 @@ export const writePackageJson = ({
 }
 
 /**写入.sanrc.ts */
-export const writeSanrcTs = (projectName: string) => {
+export const writeSanrcTs = (projectName: string, srcDir='src') => {
   renderHbsTpl({
     sourcePath: TMP_DIR + '/.sanrc.ts.hbs',
     outPath: `${projectName}/.sanrc.ts`,
+    data: { srcDir }
   })
 }
 
 /**写入src/app.ts */
-export const writeAppTs = (projectName: string) => {
+export const writeAppTs = (projectName: string, srcDir='src') => {
   renderHbsTpl({
     sourcePath: TMP_DIR + '/app.ts.hbs',
-    outPath: `${projectName}/src/app.ts`,
+    outPath: `${projectName}/${srcDir}/app.ts`,
   })
 }
 
 /**写入index.html文件 */
-export const writeIndexHtml = (projectName: string) => {
+export const writeIndexHtml = (projectName: string, srcDir='src') => {
   renderHbsTpl({
     sourcePath: TMP_DIR + '/index.html.hbs',
-    outPath: `${projectName}/index.html`,
+    outPath: `${projectName}/${srcDir}/index.html`,
     data: { projectName }
   })
 }
 
 /**写入tsconfig.json文件 */
-export const writeTsConfig = (projectName:string) => {
+export const writeTsConfig = (projectName:string, srcDir='src') => {
   renderHbsTpl({
     sourcePath: TMP_DIR + '/tsconfig.json.hbs',
-    outPath: `${projectName}/.san/tsconfig.json`,
+    outPath: `${projectName}/${srcDir}/.san/tsconfig.json`,
+    data: { srcDir }
   })
   if(!existsSync(`${projectName}/tsconfig.json`)) {
     writeFileSync(`${projectName}/tsconfig.json`, `{
-  "extends": "./.san/tsconfig.json"
+  "extends": "./${srcDir}/.san/tsconfig.json"
 }`)
   }
 }
 
 /**写入.san/index.ts */
-export const writeSanIndexTs = (projectName: string, exports?: WriteSanOptions['exports']) => {
+export const writeSanIndexTs = (sanDir: string, exports?: WriteSanOptions['exports']) => {
   renderHbsTpl({
     sourcePath: TMP_DIR + '/index.ts.hbs',
-    outPath: `${projectName}/.san/index.ts`,
+    outPath: `${sanDir}/index.ts`,
     data: { exports }
   })
 }
 
 /**写入.san/entry.tsx */
-export const writeEntryTsx = (projectName: string, options?: {
+export const writeEntryTsx = (sanDir:string, options?: {
   imports?: WriteSanOptions['imports'],
   aheadCodes?: WriteSanOptions['aheadCodes'],
   tailCodes?: WriteSanOptions['tailCodes']
 }) => {
   renderHbsTpl({
     sourcePath: TMP_DIR + '/entry.tsx.hbs',
-    outPath: `${projectName}/.san/entry.tsx`,
+    outPath: `${sanDir}/entry.tsx`,
     data: options
   })
 }
 
 /**写入.san/routes.ts */
 export const writeSanRoutesTs = (
-  projectName: string,
+  sanDir: string,
   manifest:Manifest= {'/':{ id: '/', path: '', pathname: '', file: 'page.tsx'}}
 ) => {
   renderHbsTpl({
     sourcePath: TMP_DIR + '/manifest.ts.hbs',
-    outPath: `${projectName}/.san/manifest.ts`,
+    outPath: `${sanDir}/manifest.ts`,
     data: { manifest: Object.values(manifest).sort((a, b) => {
       const nA = a.id.replace(/\/?layout/, ''), nB = b.id.replace(/\/?layout/, '')
       return nA.length === nB.length ? b.id.indexOf('layout') : nA.length - nB.length
@@ -150,15 +157,15 @@ export const writeSanRoutesTs = (
 }
 
 /**写入src/page.tsx */
-export const writeIndexPageTsx = (projectName: string) => {
+export const writeIndexPageTsx = (projectName: string, srcDir='src') => {
   renderHbsTpl({
     sourcePath: TMP_DIR + '/page.tsx.hbs',
-    outPath: `${projectName}/src/page.tsx`,
+    outPath: `${projectName}/${srcDir}/page.tsx`,
   })
 }
 
 /**写入.san/types.ts */
-export const writeSanTypesTs = (projectName: string, pageConfig?: WriteSanOptions['pageConfig'], appTypes?: WriteSanOptions['appTypes']) => {
+export const writeSanTypesTs = (sanDir: string, pageConfig?: WriteSanOptions['pageConfig'], appTypes?: WriteSanOptions['appTypes']) => {
   const all = [...pageConfig??[], ...appTypes??[]].reduce((acc, item) => {
     const index = acc.findIndex(v => v.source === item.source)
     if(index > -1 && Array.isArray(item.specifier) && Array.isArray(acc[index].specifier)) {
@@ -170,24 +177,24 @@ export const writeSanTypesTs = (projectName: string, pageConfig?: WriteSanOption
   }, [] as AddFileOptions[])
   renderHbsTpl({
     sourcePath: TMP_DIR + '/types.ts.hbs',
-    outPath: `${projectName}/.san/types.ts`,
+    outPath: `${sanDir}/types.ts`,
     data: { all, pageConfig, appTypes }
   })
 }
 
 /**写入.san/define.ts */
-export const writeSanDefineTs = (projectName: string) => {
+export const writeSanDefineTs = (sanDir: string) => {
   renderHbsTpl({
     sourcePath: TMP_DIR + '/define.ts.hbs',
-    outPath: `${projectName}/.san/define.ts`
+    outPath: `${sanDir}/define.ts`
   })
 }
 
 /**写入.san/runtimes.ts */
-export const wirteRuntime = (projectName: string, runtimes?: WriteSanOptions['runtimes']) => {
+export const wirteRuntime = (sanDir: string, runtimes?: WriteSanOptions['runtimes']) => {
   renderHbsTpl({
     sourcePath: TMP_DIR + '/runtime.ts.hbs',
-    outPath: `${projectName}/.san/runtime.ts`,
+    outPath: `${sanDir}/runtime.ts`,
     data: { runtimes }
   })
 }
