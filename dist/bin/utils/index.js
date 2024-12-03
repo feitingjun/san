@@ -199,7 +199,7 @@ export const generateRouteManifest = (srcDir = 'src') => {
             id: 'rootLayout',
             path: '',
             pathname: '',
-            file: rootLayout[0].replace(/\.tsx$/, ''),
+            file: resolve(srcDir, rootLayout[0]),
             layout: true
         };
     }
