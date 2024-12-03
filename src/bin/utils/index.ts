@@ -201,7 +201,7 @@ export const generateRouteManifest = (srcDir = 'src') => {
         parentId,
         path: id === '/' ? '' : id.replace(regex, ''),
         pathname: id.replace(/\/?layout?$/, ''),
-        file: join(pageDir, idpaths[id]),
+        file: resolve(srcDir, pageDir, idpaths[id]),
         layout: id.endsWith('layout')
       }
     }

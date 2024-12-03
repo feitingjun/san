@@ -138,14 +138,17 @@ export const writeEntryTsx = (sanDir:string, options?: {
   renderHbsTpl({
     sourcePath: TMP_DIR + '/entry.tsx.hbs',
     outPath: `${sanDir}/entry.tsx`,
-    data: options
+    data: {
+      ...options,
+      srcDir: resolve(sanDir, '..')
+    }
   })
 }
 
 /**写入.san/routes.ts */
 export const writeSanRoutesTs = (
   sanDir: string,
-  manifest:Manifest= {'/':{ id: '/', path: '', pathname: '', file: 'page.tsx'}}
+  manifest:Manifest= {'/':{ id: '/', path: '', pathname: '', file: '../page.tsx'}}
 ) => {
   renderHbsTpl({
     sourcePath: TMP_DIR + '/manifest.ts.hbs',
@@ -187,7 +190,10 @@ export const writeSanTypesTs = (sanDir: string, pageConfig?: WriteSanOptions['pa
 export const writeSanDefineTs = (sanDir: string) => {
   renderHbsTpl({
     sourcePath: TMP_DIR + '/define.ts.hbs',
-    outPath: `${sanDir}/define.ts`
+    outPath: `${sanDir}/define.ts`,
+    data: {
+      srcDir: resolve(sanDir, '..')
+    }
   })
 }
 

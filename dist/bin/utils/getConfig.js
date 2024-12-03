@@ -13,7 +13,7 @@ export default async (mode) => {
         publicDir: userConfig.publicDir || 'public',
         resolve: {
             alias: {
-                '@': resolve(process.cwd(), srcDir),
+                '@': resolve(process.cwd(), srcDir.split('/')[0]),
                 san: resolve(process.cwd(), srcDir, '.san'),
                 ...userConfig.alias
             }

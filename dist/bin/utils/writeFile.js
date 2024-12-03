@@ -88,11 +88,14 @@ export const writeEntryTsx = (sanDir, options) => {
     renderHbsTpl({
         sourcePath: TMP_DIR + '/entry.tsx.hbs',
         outPath: `${sanDir}/entry.tsx`,
-        data: options
+        data: {
+            ...options,
+            srcDir: resolve(sanDir, '..')
+        }
     });
 };
 /**写入.san/routes.ts */
-export const writeSanRoutesTs = (sanDir, manifest = { '/': { id: '/', path: '', pathname: '', file: 'page.tsx' } }) => {
+export const writeSanRoutesTs = (sanDir, manifest = { '/': { id: '/', path: '', pathname: '', file: '../page.tsx' } }) => {
     renderHbsTpl({
         sourcePath: TMP_DIR + '/manifest.ts.hbs',
         outPath: `${sanDir}/manifest.ts`,
@@ -131,7 +134,10 @@ export const writeSanTypesTs = (sanDir, pageConfig, appTypes) => {
 export const writeSanDefineTs = (sanDir) => {
     renderHbsTpl({
         sourcePath: TMP_DIR + '/define.ts.hbs',
-        outPath: `${sanDir}/define.ts`
+        outPath: `${sanDir}/define.ts`,
+        data: {
+            srcDir: resolve(sanDir, '..')
+        }
     });
 };
 /**写入.san/runtimes.ts */

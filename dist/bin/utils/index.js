@@ -1,4 +1,4 @@
-import { join, resolve, basename, extname } from 'path';
+import { resolve, basename, extname } from 'path';
 import ts from 'typescript';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 // import art from 'art-template'
@@ -185,7 +185,7 @@ export const generateRouteManifest = (srcDir = 'src') => {
                 parentId,
                 path: id === '/' ? '' : id.replace(regex, ''),
                 pathname: id.replace(/\/?layout?$/, ''),
-                file: join(pageDir, idpaths[id]),
+                file: resolve(srcDir, pageDir, idpaths[id]),
                 layout: id.endsWith('layout')
             }
         };

@@ -9,7 +9,7 @@ export default {
     {{/if}}
     file: '{{this.file}}',
     layout: {{boolean this.layout}},
-    component: () => import('@/{{rmTsx this.file}}')
+    component: () => import('{{rmTsx this.file}}')
   }{{#unless @last}},{{/unless}}
 {{/each}}
 }
