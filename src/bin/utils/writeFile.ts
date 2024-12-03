@@ -2,6 +2,7 @@ import { readFileSync, mkdirSync, existsSync, writeFileSync } from 'fs'
 import { resolve } from 'path'
 import { renderHbsTpl } from './index'
 import { Manifest } from '../../lib/types'
+import { l } from 'vite/dist/node/types.d-aGj9QkWt'
 
 const TMP_DIR = resolve(import.meta.dirname, '..', 'template')
 
@@ -110,7 +111,7 @@ export const writeTsConfig = (projectName:string, srcDir='src') => {
   renderHbsTpl({
     sourcePath: TMP_DIR + '/tsconfig.json.hbs',
     outPath: `${projectName}/${srcDir}/.san/tsconfig.json`,
-    data: { srcDir }
+    data: { srcDir, level: srcDir.split('/').length }
   })
   if(!existsSync(`${projectName}/tsconfig.json`)) {
     writeFileSync(`${projectName}/tsconfig.json`, `{

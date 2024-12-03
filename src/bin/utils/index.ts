@@ -27,6 +27,9 @@ hbs.registerHelper('rmTsx', function(value){
 hbs.registerHelper('boolean', function(value){
   return !!value
 })
+hbs.registerHelper('repeat', function(num, str){
+  return str.repeat(num)
+})
 hbs.registerHelper('space', function(value){
   if(typeof value !== 'number'){
     value = 1

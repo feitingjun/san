@@ -67,7 +67,7 @@ export const writeTsConfig = (projectName, srcDir = 'src') => {
     renderHbsTpl({
         sourcePath: TMP_DIR + '/tsconfig.json.hbs',
         outPath: `${projectName}/${srcDir}/.san/tsconfig.json`,
-        data: { srcDir }
+        data: { srcDir, level: srcDir.split('/').length }
     });
     if (!existsSync(`${projectName}/tsconfig.json`)) {
         writeFileSync(`${projectName}/tsconfig.json`, `{

@@ -15,7 +15,7 @@
     "allowSyntheticDefaultImports": true,
     "paths": {
       "@/*": [
-        "../*"
+        "{{repeat level "../"}}*"
       ],
       "san": [
         "../.san"
@@ -23,11 +23,9 @@
     }
   },
   "include": [
-    "../.sanrc.ts",
-    "../{{srcDir}}/**/*",
-    "../{{srcDir}}/.san/**/*",
-    "**/*.tsx",
-    "**/*.ts"
+    "{{repeat level "../"}}/**/*.tsx",
+    "{{repeat level "../"}}/**/*.ts",
+    "{{repeat level "../"}}/**/*.d.ts"
   ],
   "exclude": ["**/node_modules/**"]
 }
