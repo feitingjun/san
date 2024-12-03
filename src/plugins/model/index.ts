@@ -6,8 +6,8 @@ const include = [
   'models/**/*.{ts,js}',
 ]
 
-const getModels = () => {
-  const srcDir = resolve(process.cwd(), 'src')
+const getModels = (srcDir='src') => {
+  srcDir = resolve(process.cwd(), srcDir)
   const files = globSync(include, { cwd: srcDir })
   return files.map(v => {
     const filename = basename(v, extname(v))
@@ -18,6 +18,7 @@ const getModels = () => {
 export default definePlugin(() => ({
   name: 'module-plugin',
   setup: ({
+    context,
     addWatch,
     addFileTemplate,
     addExport
@@ -30,7 +31,7 @@ export default definePlugin(() => ({
       sourcePath: resolve(import.meta.dirname, 'model.ts.hbs'),
       outPath: resolve(import.meta.dirname, 'model.ts'),
       data: {
-        models: getModels()
+        models: getModels(context.srcDir)
       }
     })
     addWatch((event, path) => {
